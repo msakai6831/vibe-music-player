@@ -1,42 +1,31 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>NFT認証ページ</title>
-  <script src="https://cdn.jsdelivr.net/npm/@thirdweb-dev/sdk@4.0.0/dist/browser/index.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+  <meta charset="utf-8" />
+  <title>Connect Wallet</title>
 </head>
 <body>
-  <h1>🎧 ナイトメア再生ページ（NFT保有者限定）</h1>
-  <button onclick="connectWallet()">MetaMaskでログイン</button>
+  <h1>MetaMaskと接続</h1>
+  <button id="connect">ウォレット接続</button>
   <p id="status"></p>
 
   <script>
-    const CONTRACT_ADDRESS = "0x64a5DAc06c32689D34336b4b0f5f3B8b8CDcB495";
-    const NFT_TOKEN_ID = "0"; // 複数ある場合は動的対応も可
+    const connectButton = document.getElementById('connect');
+    const statusText = document.getElementById('status');
 
-    async function connectWallet() {
-      if (!window.ethereum) {
-        alert("MetaMaskをインストールしてください。");
-        return;
-      }
-
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      await provider.send("eth_requestAccounts", []);
-      const signer = provider.getSigner();
-      const userAddress = await signer.getAddress();
-      const sdk = new thirdweb.ThirdwebSDK("polygon");
-
-      const nftCollection = await sdk.getContract(CONTRACT_ADDRESS, "nft-collection");
-      const balance = await nftCollection.balanceOf(userAddress, NFT_TOKEN_ID);
-
-      if (balance.gt(0)) {
-        document.getElementById("status").innerText = "認証成功！リダイレクト中...";
-        window.location.href = "nightmare.html";
+    connectButton.onclick = async () => {
+      if (typeof window.ethereum !== 'undefined') {
+        try {
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+          statusText.innerText = `接続済み: ${accounts[0]}`;
+        } catch (error) {
+          statusText.innerText = '接続エラー: ' + error.message;
+        }
       } else {
-        document.getElementById("status").innerText = "このNFTを保有していないため、アクセスできません。";
+        statusText.innerText = 'MetaMaskがインストールされていません';
       }
-    }
+    };
   </script>
 </body>
 </html>
+
