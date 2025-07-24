@@ -2,16 +2,18 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>MetaMask接続テスト</title>
+  <title>MetaMaskと接続</title>
 </head>
 <body>
   <h1>MetaMaskと接続</h1>
   <button id="connectButton">ウォレット接続</button>
   <p id="status">未接続</p>
 
-  <script>
+  <script type="module">
     const connectButton = document.getElementById('connectButton');
     const status = document.getElementById('status');
+
+    const contractAddress = "0x64a5DAc06c32689D34336b4b0f5f3B8b8CDcB495"; // msakai Membership 2025 のコントラクト
 
     connectButton.addEventListener('click', async () => {
       if (typeof window.ethereum === 'undefined') {
@@ -22,16 +24,28 @@
       try {
         const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
         const account = accounts[0];
-        console.log('接続アカウント:', account);
         status.innerText = `接続済み: ${account}`;
+
+        // OpenSea APIを使ってNFT保有チェック（Polygon）
+        const url = `https://api.opensea.io/api/v2/chain/polygon/account/${account}/nfts?contract_address=${contractAddress}`;
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.nfts && data.nfts.length > 0) {
+          // NFTを1つでも保有していれば通過
+          window.location.href = 'nightmare.html';
+        } else {
+          alert('このNFTを保有していません。');
+        }
       } catch (err) {
-        console.error('接続エラー:', err);
+        console.error(err);
         status.innerText = '接続に失敗しました';
       }
     });
   </script>
 </body>
 </html>
+
 
 
 
