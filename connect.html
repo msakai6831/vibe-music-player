@@ -22,29 +22,34 @@
       }
 
       try {
-        const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
         const account = accounts[0];
         status.innerText = `接続済み: ${account}`;
 
-        // OpenSea APIでNFT保有チェック
+        // NFT保有チェック
         const url = `https://api.opensea.io/api/v2/chain/polygon/account/${account}/nfts?contract_address=${contractAddress}`;
+
         const response = await fetch(url);
         const data = await response.json();
 
-        if (data.nfts && data.nfts.length > 0) {
-          // NFT保有者なら遷移
+        console.log("OpenSea API response:", data);
+
+        if (data && data.nfts && data.nfts.length > 0) {
+          // ✅ NFTが1つでもあれば許可
           window.location.href = "nightmare.html";
         } else {
           alert("このNFTを保有していません。");
         }
+
       } catch (err) {
-        console.error(err);
+        console.error("エラー:", err);
         status.innerText = '接続に失敗しました';
       }
     });
   </script>
 </body>
 </html>
+
 
 
 
