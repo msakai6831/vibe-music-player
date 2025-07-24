@@ -2,37 +2,28 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>MetaMaskと接続</title>
 </head>
 <body>
   <h1>MetaMaskと接続</h1>
   <button id="connectButton">ウォレット接続</button>
-  <p id="status">未接続</p>
+  <p id="status"></p>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.8.1/ethers.umd.min.js"></script>
-  <script>
-    const connectButton = document.getElementById("connectButton");
-    const status = document.getElementById("status");
+  <script type="module">
+    const connectButton = document.getElementById('connectButton');
+    const status = document.getElementById('status');
 
-    connectButton.addEventListener("click", async () => {
-      if (!window.ethereum) {
-        alert("MetaMaskが見つかりません。インストールしてください。");
+    const contractAddress = '0x64a5DAc06c32689D34336b4b0f5f3B8b8CDcB495'; // msakai Membership 2025
+
+    connectButton.addEventListener('click', async () => {
+      if (typeof window.ethereum === 'undefined') {
+        alert('MetaMaskがインストールされていません。');
         return;
       }
 
       try {
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        const accounts = await provider.send("eth_requestAccounts", []);
-        const address = accounts[0];
-        status.textContent = `接続済み: ${address}`;
+        const accounts = await ethereum.request({ method: 'et
 
-        const signer = await provider.getSigner();
 
-        // msakai Membership 2025 のコントラクトアドレス
-        const contractAddress = "0x64a5DAc06c32689D34336b4b0f5f3B8b8CDcB495";
-
-        // ERC-1155 ABI の一部（balanceOf）
-        const
 
 
