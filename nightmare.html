@@ -1,11 +1,30 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <title>ナイトメア再生ページ</title>
+  <meta charset="UTF-8" />
+  <title>ナイトメア プレイヤー</title>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.min.js"></script>
 </head>
 <body>
-  <h1>🌙 ナイトメア</h1>
-  <audio src="audio/nightmare.m4a" controls loop></audio>
-</body>
-</html>
+  <h1>ナイトメア再生ページ</h1>
+  <button id="connectButton">ウォレット接続</button>
+  <p id="status">ウォレット未接続</p>
+
+  <div id="playerArea" style="display:none;">
+    <p>NFT認証済み！音楽をお楽しみください。</p>
+    <audio controls loop>
+      <source src="audio/nightmare.m4a" type="audio/mp4" />
+      お使いのブラウザはaudioタグをサポートしていません。
+    </audio>
+  </div>
+
+  <div id="unauthorized" style="display:none; color:red;">
+    <p>このページはNFT保有者のみ閲覧可能です。</p>
+  </div>
+
+  <script>
+    const connectButton = document.getElementById("connectButton");
+    const status = document.getElementById("status");
+    const playerArea = document.getElementById("playerArea");
+    const una
+
