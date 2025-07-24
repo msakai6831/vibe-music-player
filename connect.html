@@ -13,7 +13,7 @@
     const connectButton = document.getElementById('connectButton');
     const status = document.getElementById('status');
 
-    const contractAddress = "0x64a5DAc06c32689D34336b4b0f5f3B8b8CDcB495"; // msakai Membership 2025 のコントラクト
+    const contractAddress = "0x64a5DAc06c32689D34336b4b0f5f3B8b8CDcB495"; // msakai Membership 2025
 
     connectButton.addEventListener('click', async () => {
       if (typeof window.ethereum === 'undefined') {
@@ -26,16 +26,16 @@
         const account = accounts[0];
         status.innerText = `接続済み: ${account}`;
 
-        // OpenSea APIを使ってNFT保有チェック（Polygon）
+        // OpenSea APIでNFT保有チェック
         const url = `https://api.opensea.io/api/v2/chain/polygon/account/${account}/nfts?contract_address=${contractAddress}`;
         const response = await fetch(url);
         const data = await response.json();
 
         if (data.nfts && data.nfts.length > 0) {
-          // NFTを1つでも保有していれば通過
-          window.location.href = 'nightmare.html';
+          // NFT保有者なら遷移
+          window.location.href = "nightmare.html";
         } else {
-          alert('このNFTを保有していません。');
+          alert("このNFTを保有していません。");
         }
       } catch (err) {
         console.error(err);
@@ -45,6 +45,7 @@
   </script>
 </body>
 </html>
+
 
 
 
